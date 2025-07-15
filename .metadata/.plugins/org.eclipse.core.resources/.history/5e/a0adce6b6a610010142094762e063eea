@@ -1,0 +1,27 @@
+package com.example.demo.service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+@Service
+	public class RecommendedService {
+	  private final RestTemplate restTemplate;
+	  private final String recommendUrl = "https://d0ab9f528bfa.ngrok-free.app/recommend";
+
+	  public RecommenderService(RestTemplate restTemplate) {
+	    this.restTemplate = restTemplate;
+	  }
+
+	  public List<String> getRecommendations(String title) {
+	    Map<String, String> req = Collections.singletonMap("movie", title);
+	    ResponseEntity<Map> resp = restTemplate.postForEntity(recommendUrl, req, Map.class);
+	    return (List<String>) resp.getBody().get("recommendations");
+	  }
+	}
+
+
